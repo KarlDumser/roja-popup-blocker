@@ -14,9 +14,14 @@ The extension is deliberately narrower than a general-purpose ad blocker: it act
 
 The toolbar popup lets you temporarily disable protection for the current host if a player needs troubleshooting.
 
+## Updating an unpacked installation
+
+After updating the project files, open `chrome://extensions`, find **Roja Popup Blocker**, click its circular **Reload** button, and then reload the streaming page. Chrome does not automatically reload changed extension service workers.
+
 ## Included protection
 
 - blocks popups created with `window.open` on supported streaming hosts;
+- immediately closes externally opened spam tabs and pop-unders, even when an ad script bypasses `window.open`;
 - removes large fixed click-catcher overlays while preserving video/iframe players;
 - blocks observed pop-under, interstitial, and tracking domains with Manifest V3 Declarative Net Request rules;
 - watches dynamically inserted nodes, because many ad overlays arrive after the player;
@@ -44,4 +49,3 @@ Add only the registrable host to `protectedHosts` in `extension/config.js`, then
 The extension stores only two things locally in Chrome: the hosts you paused and a count of blocked page-level items. It sends no browsing data anywhere and contains no analytics. The `<all_urls>` access is needed so protection can run inside changing third-party player frames; the code immediately exits on hosts not listed in `config.js`.
 
 This project is independent and is not affiliated with RojaDirecta or any streaming provider. It does not provide, proxy, decrypt, or modify video streams.
-

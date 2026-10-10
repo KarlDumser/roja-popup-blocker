@@ -31,7 +31,8 @@ const scripts = [
   "config.js",
   "content.js",
   "main-world-guard.js",
-  "popup.js"
+  "popup.js",
+  "tab-policy.js"
 ];
 for (const script of scripts) {
   const result = spawnSync(process.execPath, ["--check", path.join(extension, script)], { encoding: "utf8" });
@@ -39,4 +40,3 @@ for (const script of scripts) {
 }
 
 console.log(`Manifest ${manifest.version}: ${rules.length} network rules, ${referencedFiles.length} referenced assets — OK`);
-

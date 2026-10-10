@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
   "name": "Roja Popup Blocker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Blocks click-popups and advertising overlays on RojaDirecta-linked streaming pages.",
   "minimum_chrome_version": "120",
   "permissions": [
     "declarativeNetRequest",
-    "storage"
+    "storage",
+    "webNavigation"
   ],
   "host_permissions": [
     "<all_urls>"
@@ -57,4 +58,3 @@
     }
   ]
 }
-
