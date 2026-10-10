@@ -1,0 +1,18 @@
+[
+  { "id": 1, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||acscdn.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest", "image"] } },
+  { "id": 2, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||czernik.org^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
+  { "id": 3, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||dh8azcl753e1e.cloudfront.net^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
+  { "id": 4, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||histats.com^", "resourceTypes": ["script", "image", "xmlhttprequest"] } },
+  { "id": 5, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||amung.us^", "resourceTypes": ["script", "image", "xmlhttprequest"] } },
+  { "id": 6, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||adsterra.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest", "image"] } },
+  { "id": 7, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||highperformanceformat.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
+  { "id": 8, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||highperformancedisplayformat.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
+  { "id": 9, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||monetag.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
+  { "id": 10, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||propellerads.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
+  { "id": 11, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||onclicka.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
+  { "id": 12, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||popcash.net^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
+  { "id": 13, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||popads.net^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
+  { "id": 14, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||clickadu.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
+  { "id": 15, "priority": 1, "action": { "type": "block" }, "condition": { "regexFilter": "^https?://jkjk\\.sportsonline\\.website/lolo_.*\\.js", "resourceTypes": ["script"] } }
+]
+
