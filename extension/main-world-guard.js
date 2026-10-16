@@ -2,9 +2,12 @@
   "use strict";
 
   const config = globalThis.RojaGuardConfig;
-  if (!config || !config.isProtectedHost(location.hostname)) return;
+  if (!config) return;
 
   const originalOpen = window.open.bind(window);
+  const staticallyProtected = config.isProtectedHost(location.hostname);
+  const active = () => staticallyProtected ||
+    document.documentElement?.dataset.rojaGuardActive === "true";
   const disabled = () => document.documentElement?.dataset.rojaGuardDisabled === "true";
 
   const resolveUrl = (value) => {
@@ -23,7 +26,7 @@
   };
 
   const guardedOpen = function guardedOpen(url, target, features) {
-    if (disabled()) return originalOpen(url, target, features);
+    if (!active() || disabled()) return originalOpen(url, target, features);
 
     const parsed = resolveUrl(url);
     if (parsed && parsed.origin === location.origin) {

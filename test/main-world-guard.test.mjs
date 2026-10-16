@@ -56,3 +56,10 @@ test("does not patch window.open on an unrelated host", () => {
   assert.equal(calls.length, 1);
 });
 
+test("activates dynamically when the background marks a newly learned host", () => {
+  const { window, calls, context } = createContext("new-stream-host.example");
+  context.document.documentElement.dataset.rojaGuardActive = "true";
+  assert.equal(window.open("https://spam.example/ad"), null);
+  assert.equal(calls.length, 0);
+});
+

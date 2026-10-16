@@ -13,6 +13,9 @@ const config = context.RojaGuardConfig;
 
 test("matches configured hosts and their subdomains", () => {
   assert.equal(config.isProtectedHost("polocruz10.pages.dev"), true);
+  assert.equal(config.isProtectedHost("pianoplays.biz"), true);
+  assert.equal(config.isProtectedHost("ch.nexa.st"), true);
+  assert.equal(config.isProtectedHost("matchli.st"), true);
   assert.equal(config.isProtectedHost("ww1.sportsonnline.click"), true);
   assert.equal(config.isProtectedHost("WWW.ROJADIRECTA.EU"), true);
 });

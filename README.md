@@ -26,7 +26,8 @@ After updating the project files, open `chrome://extensions`, find **Roja Popup 
 - blocks observed pop-under, interstitial, and tracking domains with Manifest V3 Declarative Net Request rules;
 - watches dynamically inserted nodes, because many ad overlays arrive after the player;
 - covers frames as well as the top-level page;
-- supports RojaDirecta plus the third-party player hosts collected in `extension/config.js`.
+- supports RojaDirecta plus the third-party player hosts collected in `extension/config.js`;
+- automatically learns new streaming hosts opened from the RojaDirecta/player chain, so rotating domains do not require a release first.
 
 ## Development
 
@@ -46,6 +47,6 @@ Add only the registrable host to `protectedHosts` in `extension/config.js`, then
 
 ## Scope and privacy
 
-The extension stores only two things locally in Chrome: the hosts you paused and a count of blocked page-level items. It sends no browsing data anywhere and contains no analytics. The `<all_urls>` access is needed so protection can run inside changing third-party player frames; the code immediately exits on hosts not listed in `config.js`.
+The extension stores only three things locally in Chrome: the hosts you paused, up to 200 streaming hosts learned from the protected navigation chain, and a count of blocked items. It sends no browsing data anywhere and contains no analytics. The `<all_urls>` access is needed so protection can run inside changing third-party player frames; page-level blocking stays inactive outside the configured or locally learned protection chain.
 
 This project is independent and is not affiliated with RojaDirecta or any streaming provider. It does not provide, proxy, decrypt, or modify video streams.

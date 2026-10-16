@@ -25,9 +25,14 @@ globalThis.RojaTabPolicy = Object.freeze({
     return this.portalHosts.some((entry) => host === entry || host.endsWith(`.${entry}`));
   },
 
-  shouldClose({ sourceUrl, targetUrl, disabledHosts = [] }) {
+  isProtectedHost(hostname, learnedHosts = []) {
+    const host = String(hostname || "").toLowerCase().replace(/^www\./, "");
+    return globalThis.RojaGuardConfig?.isProtectedHost(host) || learnedHosts.includes(host);
+  },
+
+  shouldClose({ sourceUrl, targetUrl, disabledHosts = [], learnedHosts = [] }) {
     const sourceHost = this.hostnameFromUrl(sourceUrl);
-    if (!globalThis.RojaGuardConfig?.isProtectedHost(sourceHost)) return false;
+    if (!this.isProtectedHost(sourceHost, learnedHosts)) return false;
     if (this.isPortalHost(sourceHost)) return false;
     if (disabledHosts.includes(sourceHost)) return false;
 

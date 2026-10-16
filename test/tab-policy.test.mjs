@@ -46,3 +46,11 @@ test("does not interfere with unrelated websites", () => {
     targetUrl: "https://another.example/"
   }), false);
 });
+
+test("protects hosts learned from the RojaDirecta navigation chain", () => {
+  assert.equal(policy.shouldClose({
+    sourceUrl: "https://new-player.example/watch",
+    targetUrl: "https://spam.example/",
+    learnedHosts: ["new-player.example"]
+  }), true);
+});

@@ -10,6 +10,7 @@ globalThis.RojaGuardConfig = Object.freeze({
     "lnky.fun",
     "mycloudstream.io",
     "nonstopservice.org",
+    "pianoplays.biz",
     "polocruz10.pages.dev",
     "regames4u.cfd",
     "sebn.dad",
@@ -24,7 +25,9 @@ globalThis.RojaGuardConfig = Object.freeze({
     "wildgames.bz",
     "wixfree.lol",
     "ytstreams.club",
-    "dyntheme.net"
+    "dyntheme.net",
+    "nexa.st",
+    "matchli.st"
   ]),
 
   adTokens: Object.freeze([
@@ -32,10 +35,13 @@ globalThis.RojaGuardConfig = Object.freeze({
     "ad-728",
     "ad-container",
     "ad-overlay",
+    "adclicklayer",
     "adsbox",
     "advert",
     "click-catcher",
     "interstitial",
+    "first-click-ads-layer",
+    "delayed-popup-ads-layer",
     "popunder",
     "popup-ad",
     "publicidad"

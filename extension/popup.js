@@ -11,12 +11,18 @@
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const url = tab?.url ? new URL(tab.url) : null;
     const hostname = url?.hostname || "";
-    const supported = globalThis.RojaGuardConfig.isProtectedHost(hostname);
+    const protection = await chrome.runtime.sendMessage({
+      type: "ROJA_GUARD_GET_PROTECTION",
+      tabId: tab?.id,
+      url: tab?.url || ""
+    });
+    const supported = globalThis.RojaGuardConfig.isProtectedHost(hostname) ||
+      Boolean(protection?.protected);
     const { disabledHosts = [], blockedTotal = 0 } = await chrome.storage.local.get([
       "disabledHosts",
       "blockedTotal"
     ]);
-    const enabled = supported && !disabledHosts.includes(hostname);
+    const enabled = supported && protection?.enabled !== false && !disabledHosts.includes(hostname);
 
     hostElement.textContent = hostname || "Keine normale Webseite";
     blockedElement.textContent = blockedTotal.toLocaleString("de-DE");

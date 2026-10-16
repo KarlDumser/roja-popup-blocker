@@ -13,6 +13,11 @@
   { "id": 12, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||popcash.net^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
   { "id": 13, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||popads.net^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
   { "id": 14, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||clickadu.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"] } },
-  { "id": 15, "priority": 1, "action": { "type": "block" }, "condition": { "regexFilter": "^https?://jkjk\\.sportsonline\\.website/lolo_.*\\.js", "resourceTypes": ["script"] } }
+  { "id": 15, "priority": 1, "action": { "type": "block" }, "condition": { "regexFilter": "^https?://jkjk\\.sportsonline\\.website/lolo_.*\\.js", "resourceTypes": ["script"] } },
+  { "id": 16, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||nudgebelonged.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest", "image"] } },
+  { "id": 17, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||highrevenueformat.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest", "image"] } },
+  { "id": 18, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||reliedhounder.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest", "image"] } },
+  { "id": 19, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||lauansaltire.com^", "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest", "image"] } },
+  { "id": 20, "priority": 1, "action": { "type": "block" }, "condition": { "urlFilter": "||livelog.site^", "resourceTypes": ["script", "xmlhttprequest", "image"] } }
 ]
 

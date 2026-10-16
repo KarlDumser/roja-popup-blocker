@@ -2,10 +2,26 @@
   "use strict";
 
   const config = globalThis.RojaGuardConfig;
-  if (!config || !config.isProtectedHost(location.hostname)) return;
+  if (!config) return;
 
-  let enabled = true;
+  const staticallyProtected = config.isProtectedHost(location.hostname);
+  let protectedPage = false;
+  let enabled = false;
   let observer;
+  let started = false;
+
+  const forcedAdSelectors = [
+    "#adClickLayer",
+    "#adsNativeContainer",
+    "#first-click-ads-layer",
+    ".delayed-popup-ads-layer",
+    ".ad-300",
+    ".ad-320-box",
+    ".ad-468-box",
+    ".ad-728",
+    ".native-ad",
+    "[aria-label='Advertisement']"
+  ];
 
   const report = (kind, value = "") => {
     chrome.runtime.sendMessage({
@@ -21,8 +37,8 @@
     element.getAttribute?.("aria-label") || ""
   ].join(" ").toLowerCase();
 
-  const isPlayerElement = (element) => Boolean(element.closest?.(
-    "video, audio, [role='slider'], [class*='player'], [id*='player']"
+  const isMediaControl = (element) => Boolean(element.closest?.(
+    "video, audio, iframe, button, input, select, [role='button'], [role='slider']"
   ));
 
   const hasAdToken = (element) => {
@@ -31,7 +47,7 @@
   };
 
   const isLargeOverlay = (element) => {
-    if (!(element instanceof HTMLElement) || isPlayerElement(element)) return false;
+    if (!(element instanceof HTMLElement) || isMediaControl(element)) return false;
 
     const style = getComputedStyle(element);
     if (style.display === "none" || style.visibility === "hidden") return false;
@@ -55,15 +71,22 @@
   };
 
   const clean = (root = document) => {
-    if (!enabled || !root.querySelectorAll) return;
+    if (!protectedPage || !enabled || !root.querySelectorAll) return;
 
-    if (root instanceof Element && hasAdToken(root) && !isPlayerElement(root)) {
+    const forced = [];
+    if (root instanceof Element && root.matches(forcedAdSelectors.join(","))) forced.push(root);
+    forced.push(...root.querySelectorAll(forcedAdSelectors.join(",")));
+    for (const element of forced) removeElement(element, "player-ad-overlay");
+
+    if (root instanceof Element && hasAdToken(root) && !isMediaControl(root)) {
       removeElement(root, "ad-element");
       return;
     }
 
     const candidates = root.querySelectorAll([
       ".ad-300",
+      ".ad-320-box",
+      ".ad-468-box",
       ".ad-728",
       ".adsbox",
       ".ad-overlay",
@@ -75,7 +98,7 @@
     ].join(","));
 
     for (const element of candidates) {
-      if (!isPlayerElement(element)) removeElement(element, "ad-element");
+      if (!isMediaControl(element)) removeElement(element, "ad-element");
     }
 
     const overlayCandidates = root.querySelectorAll("body > div, body > a, [style*='z-index']");
@@ -85,16 +108,12 @@
   };
 
   const setEnabled = (nextEnabled) => {
-    enabled = nextEnabled;
+    enabled = protectedPage && nextEnabled;
     if (document.documentElement) {
+      document.documentElement.dataset.rojaGuardActive = String(protectedPage);
       document.documentElement.dataset.rojaGuardDisabled = String(!enabled);
     }
     if (enabled) clean();
-  };
-
-  const loadSettings = async () => {
-    const { disabledHosts = [] } = await chrome.storage.local.get("disabledHosts");
-    setEnabled(!disabledHosts.includes(location.hostname));
   };
 
   document.addEventListener("rojaguard:blocked", (event) => {
@@ -114,6 +133,18 @@
   }, true);
 
   const start = () => {
+    if (started || !protectedPage) return;
+    started = true;
+
+    const style = document.createElement("style");
+    style.dataset.rojaGuardStyle = "true";
+    style.textContent = `${forcedAdSelectors.join(",")} {
+      display: none !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }`;
+    (document.head || document.documentElement).appendChild(style);
+
     clean();
     observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
@@ -129,13 +160,31 @@
   };
 
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-    if (message?.type === "ROJA_GUARD_SET_ENABLED") {
+    if (message?.type === "ROJA_GUARD_SET_ENABLED" && protectedPage) {
       setEnabled(Boolean(message.enabled));
       sendResponse({ ok: true, enabled });
     }
   });
 
-  loadSettings().catch(() => setEnabled(true));
-  if (document.documentElement) start();
-  else document.addEventListener("DOMContentLoaded", start, { once: true });
+  const activate = async () => {
+    let status = { protected: staticallyProtected, enabled: staticallyProtected };
+    try {
+      status = await chrome.runtime.sendMessage({
+        type: "ROJA_GUARD_GET_PROTECTION",
+        url: location.href,
+        referrer: document.referrer
+      });
+    } catch {
+      // Static host protection still works if the service worker is restarting.
+    }
+
+    protectedPage = staticallyProtected || Boolean(status?.protected);
+    if (!protectedPage) return;
+    setEnabled(staticallyProtected ? status?.enabled !== false : Boolean(status?.enabled));
+
+    if (document.documentElement) start();
+    else document.addEventListener("DOMContentLoaded", start, { once: true });
+  };
+
+  void activate();
 })();
